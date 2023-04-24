@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nCrane | CBT</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <!-- FontAweome CDN Link for Icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+</head>
+<body>
+    <!-- start Exam button -->
+<img src="{% static 'lasu.jpg' %}">
+    <div class="start_btn"><button>Start Exam</button></div>
+
+    <!-- Info Box -->
+    <div class="info_box">
+        <div class="info-title"><span> RULES OF THIS EXAM</span></div>
+            <div class="info-list">
+                <div class="info">1. You will have only <span>90 minutes</span> for the entire exam.</div>
+                <div class="info">2. You are allowed to take this exam only once</div>
+                <div class="info">3. You can't exit from the Exam while the Exam is on going .</div>
+                <div class="info">4. You would be scored over 100 and your GP would be recorded.</div>
+            </div>
+
+            <div class="buttons">
+                {% if user.is_authenticated %}
+                    {% if start.start_exam == True %}
+                    <button class="quit">Exit Exam</button>
+                        <form method="post" action="exam">
+                            {% csrf_token %}
+                            <button class="restart">Continue</button>
+                        </form>
+                    {% else %}
+                        <h3>No exam, come back later.</h3>
+                    {% endif %}
+                    {% else %}
+                    <h2>You are not logged in; sign in <a href="/signin">here</a></h2>
+                {% endif %}
+                </div>
+
+
+    </div>
+    <script>
+        const start_btn = document.querySelector(".start_btn"),
+        info_box = document.querySelector(".info_box"),
+        quit = document.querySelector(".quit")
+
+        function show_rules(){
+            info_box.classList.add("activeInfo"); //show info box
+        }
+        function hide_rules(){
+            info_box.classList.remove("activeInfo")
+        }
+        start_btn.addEventListener("click", show_rules)
+        quit.addEventListener("click", hide_rules)
+    </script>
+
+</body>
+</html>
